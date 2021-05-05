@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.kamisaka.blog.mapper.ArticleMapper">
+    <select id="getArticles" resultType="Article">
+        select * from kamisakanote.article limit #{index},#{pageSize};
+    </select>
+    <select id="getArticleById" parameterType="Long" resultType="Article">
+        select * from kamisakanote.article where aid = #{aid}
+    </select>
+    <select id="getArticlesByCategory" parameterType="Long" resultType="Article">
+        select * from kamisakanote.article where cid = #{cid}
+    </select>
+    <select id="getArticlesByDate" parameterType="Integer" resultType="Article">
+        select * from kamisakanote.article order by createDate limit #{size}
+    </select>
+    <select id="countArticles" resultType="Long">
+        select count(*) from kamisakanote.article
+    </select>
+    <insert id="addArticle" parameterType="Article">
+        insert into kamisakanote.article(title,author,createDate,updateDate,cid,description,content,view)
+        values (#{title},#{author},#{createDate},#{updateDate},#{cid},#{description},#{content},#{view})
+    </insert>
+    <delete id="deleteArticle" parameterType="Long">
+        delete from kamisakanote.article where aid = #{aid}
+    </delete>
+    <update id="updateArticle" parameterType="Article">
+        update kamisakanote.article
+        set title = #{title},author = #{author},createDate = #{createDate},updateDate = #{updateDate},cid = #{cid},description = #{description},content = #{content},view = #{view}
+        where aid = #{aid}
+    </update>
+</mapper>

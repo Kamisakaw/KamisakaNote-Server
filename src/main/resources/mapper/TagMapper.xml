@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.kamisaka.blog.mapper.TagMapper">
+    <select id="getTags" resultType="Tag">
+        select * from kamisakanote.tag;
+    </select>
+    <select id="getTagsByAid" parameterType="Long" resultType="Tag">
+        select *
+        from kamisakanote.tag
+        where tid in
+            (select tid
+            from kamisakanote.ta
+            where aid = #{aid})
+    </select>
+    <select id="getAidsByTag" parameterType="Long" resultType="Long">
+        select aid from kamisakanote.ta where tid = #{tid}
+    </select>
+    <select id="checkTA" resultType="Long">
+        select count (*) from kamisakanote.ta where tid = #{tid},aid = #{aid}
+    </select>
+    <select id="countTags" resultType="Long">
+        select count(*) from kamisakanote.tag
+    </select>
+    <insert id="addTag" parameterType="Tag">
+        insert into kamisakanote.tag(tagName,createDate)
+        values (#{tagName},#{createDate})
+    </insert>
+    <insert id="addTagToArticle">
+        insert into kamisakanote.ta(tid,aid)
+        values (#{tid},#{aid})
+    </insert>
+    <delete id="deleteTag" parameterType="Long">
+        delete from kamisakanote.tag where tid = #{tid}
+    </delete>
+    <delete id="deleteTagToArticle" parameterType="Long">
+        delete from kamisakanote.ta where tid = #{tid} and aid = #{aid}
+    </delete>
+    <delete id="deleteAllTagsToArticle" parameterType="Long">
+        delete from kamisakanote.ta where aid = #{aid}
+    </delete>
+    <update id="updateTag" parameterType="Tag">
+        update kamisakanote.tag
+        set tagName = #{tagName}
+        where tid = #{tid}
+    </update>
+</mapper>

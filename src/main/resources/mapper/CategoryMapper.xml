@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.kamisaka.blog.mapper.CategoryMapper">
+    <select id="getCategories" resultType="Category">
+        select * from kamisakanote.category;
+    </select>
+    <select id="getCategoryById" parameterType="Long" resultType="Category">
+        select * from kamisakanote.category where cid = #{cid}
+    </select>
+    <select id="countCategories" resultType="Long">
+        select count(*) from kamisakanote.category
+    </select>
+    <insert id="addCategory" parameterType="Category">
+        insert into kamisakanote.category(categoryName,createDate)
+        values (#{categoryName},#{createDate})
+    </insert>
+    <delete id="deleteCategory" parameterType="Long">
+        delete from kamisakanote.category where cid = #{cid}
+    </delete>
+    <update id="updateCategory" parameterType="Category">
+        update kamisakanote.category
+        set categoryName = #{categoryName}
+        where cid = #{cid}
+    </update>
+</mapper>
