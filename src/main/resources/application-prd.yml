@@ -1,0 +1,23 @@
+spring:
+  #\u914D\u7F6E\u6570\u636E\u5E93
+  datasource:
+    username: root
+    password: 1230120
+    url: jdbc:mysql://localhost:3306/kamisakanote?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #\u914D\u7F6Eredis\uFF0C\u8FD9\u91CCpassword\u9ED8\u8BA4\u4E3A\u7A7A\uFF0C\u6240\u4EE5\u4E0D\u5199
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    #\u4F7F\u7528lettuce\u4F5C\u4E3A\u8FDE\u63A5\u5230redis\u7684\u5BA2\u6237\u7AEF
+    lettuce:
+      #\u914D\u7F6E\u8FDE\u63A5\u6C60\u7684\u53C2\u6570\uFF0C\u4F9D\u6B21\u4EE3\u8868\u6700\u5927\u8FDE\u63A5\u6570\u3001\u6700\u957F\u7B49\u5F85\u65F6\u95F4\u3001\u6700\u5927\u7A7A\u95F2\u8FDE\u63A5\u6570\u3001\u6700\u5C0F\u7A7A\u95F2\u8FDE\u63A5\u6570
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: pers.kamisaka.blog.entity

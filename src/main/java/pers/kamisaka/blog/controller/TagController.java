@@ -36,6 +36,7 @@ public class TagController {
     @ApiOperation("添加新标签信息")
     @PostMapping("/blog/admin/tag/add")
     public Result addTag(@RequestBody Tag tag){
+        System.out.println(tag);
         int flag = tagService.addTag(tag);
         if(flag == 1){
             return new Result("success","成功添加了新标签！aid="+tag.getTid());

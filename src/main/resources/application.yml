@@ -1,26 +1,6 @@
 spring:
-  #配置数据库
-  datasource:
-    username: root
-    password: 1230120
-    url: jdbc:mysql://localhost:3306/kamisakanote?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  #配置redis，这里password默认为空，所以不写
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    password:
-    #使用lettuce作为连接到redis的客户端
-    lettuce:
-      #配置连接池的参数，依次代表最大连接数、最长等待时间、最大空闲连接数、最小空闲连接数
-      pool:
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
-mybatis:
-  mapper-locations: classpath:/mapper/*.xml
-  type-aliases-package: pers.kamisaka.blog.entity
+  profiles:
+    active: prd
 server:
   port: 8000
 avatarFolder: classpath:/resources/avatars/

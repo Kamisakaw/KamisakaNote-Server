@@ -14,7 +14,8 @@ public interface ArticleMapper {
     List<Article> getArticlesByCategory(Long cid);
     List<Article> getArticlesByDate(Integer size);
     Long countArticles();
-    int addArticle(Article article);
+    Long addArticle(Article article);
     int deleteArticle(Long aid);
     int updateArticle(Article article);
+    int uploadPic(Long aid,String url);
 }

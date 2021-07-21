@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import pers.kamisaka.blog.entity.Result;
 import pers.kamisaka.blog.entity.TokenResult;
 import pers.kamisaka.blog.entity.User;
 import pers.kamisaka.blog.service.UserService;
+import pers.kamisaka.blog.util.FileUtils;
 import pers.kamisaka.blog.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -94,24 +94,10 @@ public class UserController {
         if(filename == null){
             return new Result("fail","服务器未接收到图片，请重试!");
         }
-        //随机生成uuid作为文件名的加密前缀
-        String code = UUID.randomUUID().toString().replaceAll("-","");
-        String finalFilename = code+filename.substring(filename.lastIndexOf('.'));
-        //存放在static目录，按日期生成的文件夹中
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String currentDate =  sdf.format(new Date());
-        String resourcePath = ClassUtils.getDefaultClassLoader().getResource("static").getPath();
-        String filePath = resourcePath+ File.separator + "avatar" + File.separator + finalFilename;
-        //创建目标文件
-        File destFile = new File(filePath);
-        //父目录不存在，优先创建父目录
-        if(!destFile.getParentFile().exists()) {
-            destFile.getParentFile().mkdirs();
-        }
-        file.transferTo(destFile);
+        String url = FileUtils.storeFile(file);
 
         User user = userService.getUserByUid(uid);
-        user.setAvatarPath(finalFilename);
+        user.setAvatarPath(url);
         int flag = userService.updateUser(user);
         if(flag == 1){
             return new Result("success","成功修改了用户头像！uid="+user.getUid());

@@ -70,19 +70,19 @@ public class RedisConfig {
     }
 
     //根据调用方法生成缓存的key名
-    @Bean
-    public KeyGenerator keyGenerator(){
-        return new KeyGenerator(){
-            @Override
-            public Object generate(Object target, Method method, Object... params) {
-                StringBuffer sb = new StringBuffer();
-                sb.append(target.getClass().getName());
-                sb.append(method.getName());
-                for(Object param : params){
-                    sb.append(param.getClass().getName());
-                }
-                return sb.toString();
-            }
-        };
-    }
+//    @Bean
+//    public KeyGenerator keyGenerator(){
+//        return new KeyGenerator(){
+//            @Override
+//            public Object generate(Object target, Method method, Object... params) {
+//                StringBuffer sb = new StringBuffer();
+//                sb.append(target.getClass().getName());
+//                sb.append(method.getName());
+//                for(Object param : params){
+//                    sb.append(param.getClass().getName());
+//                }
+//                return sb.toString();
+//            }
+//        };
+//    }
 }

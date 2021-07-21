@@ -17,9 +17,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
     TokenAuthenticationInterceptor authenticationInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor)
-                .addPathPatterns("/blog/admin/**")
-                .excludePathPatterns("/blog/admin/login");
+//        registry.addInterceptor(authenticationInterceptor)
+//                .addPathPatterns("/blog/admin/**")
+//                .excludePathPatterns("/blog/admin/login");
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

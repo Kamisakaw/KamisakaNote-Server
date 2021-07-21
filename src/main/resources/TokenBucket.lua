@@ -1,16 +1,35 @@
---key值，用来辨识要限流的请求
-local key = "rate.limit:"..KEYS[1]
---设置限流值
-local limit = tonumber(ARGV[1])
---获取当前请求数，如果这个请求的限流信息没有被初始化，就设为0
---当redis里没有该请求的限流信息的时候，并不需要添加，因为后面的INCREBY命令会在查询不到key的时候自行添加一个value为0的行，再执行INCREBY
-local current = tonumber(redis.call("get",key) or "0")
---请求超过上限，返回0表示请求失败
-if current+1 > limit then
-    return tostring(0)
+--传入错误的参数，返回-1
+if KEYS[1] == nil then
+    return tonumber(-1)
+end
+
+--第一次进行请求，在redis中初始化限流信息
+if(redis.call("exists",KEYS[1])==0) then
+    redis.call("hmset",KEYS[1],
+                "volume",ARGV[1],
+                "rate",ARGV[2],
+                "current",ARGV[1],
+                "last_visit",ARGV[4]
+                )
+    redis.call("expire",KEYS[1],ARGV[3])
+end
+--获取上次访问请求的时间，计算新增令牌并放入桶中
+local rateLimitInfo = redis.call("hmget",KEYS[1],"volume","rate","current","last_visit")
+local volume = tonumber(rateLimitInfo[1])
+local rate = tonumber(rateLimitInfo[2])
+local current = tonumber(rateLimitInfo[3])
+local last_visit = tonumber(rateLimitInfo[4])
+local now = current + rate * math.floor((tonumber(ARGV[4])-last_visit)/1000)
+if(now > volume) then
+    now = volume
+end
+
+redis.call("hmset",KEYS[1],"current",now)
+
+if(now < 0) then
+    return tonumber(0)
 else
-    --请求能够被接受，先增加处理的请求数，再更新限流信息的时限
-    redis.call("INCRBY",key,"1")
-    redis.call("expire",key,"2")
-    return tostring(current+1)
+    redis.call("hincrby",KEYS[1],"current",-1)
+    redis.call("hmset",KEYS[1],"last_visit",ARGV[4])
+    return tonumber(now)
 end

@@ -1,0 +1,1 @@
+insert into article(title,author) values ('test','admin');

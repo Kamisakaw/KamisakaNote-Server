@@ -30,6 +30,7 @@ public class TagService {
     }
     public int addTag(Tag tag){
         //tag.setTid(tagMapper.countTags()+1);
+        System.out.println(tag);
         tag.setCreateDate(new Timestamp(System.currentTimeMillis()));
         return tagMapper.addTag(tag);
     };

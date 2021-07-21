@@ -12,7 +12,9 @@ public @interface RateLimit {
     //用于在redis中唯一标识被限流请求的key
     String key() default "";
     //限流信息的持续时间
-    int time();
-    //限流的次数
-    int count();
+    int expire();
+    //令牌桶大小
+    int volume();
+    //令牌生成速度
+    int rate();
 }
