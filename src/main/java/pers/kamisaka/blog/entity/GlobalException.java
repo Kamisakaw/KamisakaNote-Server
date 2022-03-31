@@ -1,6 +1,6 @@
 package pers.kamisaka.blog.entity;
 
-public class AuthenticationException extends RuntimeException{
+public class GlobalException extends RuntimeException{
     private String status;
     private String msg;
 
@@ -20,7 +20,7 @@ public class AuthenticationException extends RuntimeException{
         this.msg = msg;
     }
 
-    public AuthenticationException(String status, String msg) {
+    public GlobalException(String status, String msg) {
         this.status = status;
         this.msg = msg;
     }
